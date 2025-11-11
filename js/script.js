@@ -7,8 +7,17 @@ const cartModal = document.getElementById("cart-modal");
 const cartOverlay = document.getElementById("cart-overlay");
 const closeCart = document.getElementById("close-cart");
 const cartItemsList = document.getElementById("cart-items");
+const empty = document.getElementById("empty");
 
 let totalPrice = 0;
+// display cart is empty message if cart items list is empty
+function emptyMessage() {
+  if (cartItemsList.children.length === 0) {
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+  }
+}
 
 // Show cart when clicked
 cartToggle.addEventListener("click", () => {
@@ -16,7 +25,7 @@ cartToggle.addEventListener("click", () => {
   cartOverlay.classList.add("show");
 });
 
-// Hide cart when clicking the close button or outside area
+// hide cart when clicking the close button or outside area
 closeCart.addEventListener("click", () => {
   cartModal.classList.remove("show");
   cartOverlay.classList.remove("show");
@@ -33,7 +42,6 @@ addToCartBtns.forEach((btn) => {
     const name = product.dataset.name;
     const price = parseFloat(product.dataset.price);
 
-    // Create new cart list item
     const li = document.createElement("li");
     li.className = "flex justify-between items-center border-b py-2";
     li.dataset.price = price;
@@ -41,10 +49,10 @@ addToCartBtns.forEach((btn) => {
       <span>${name} - $${price.toFixed(2)}</span>
       <button class="remove-btn text-red-500 hover:text-red-700 text-sm">Remove</button>
     `;
-
     // Add to list and update total
     cartItemsList.appendChild(li);
     updateTotalPrice(price);
+    emptyMessage();
   });
 });
 
@@ -60,4 +68,11 @@ function removeItem(event) {
   const price = parseFloat(item.dataset.price);
   updateTotalPrice(-price);
   item.remove();
+  emptyMessage();
 }
+//removes items on btn click in modal
+cartItemsList.addEventListener("click", (event) => {
+  if (event.target.classList.contains("remove-btn")) {
+    removeItem(event);
+  }
+});
