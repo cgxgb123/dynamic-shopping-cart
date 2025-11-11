@@ -3,6 +3,7 @@ const productPrice = document.getElementById("product-price");
 const addProductBtn = document.getElementById("add-product");
 const cart = document.getElementById("cart");
 const totalPriceS = document.getElementById("total-price");
+const cartCount = document.getElementById("cart-count");
 
 let totalPrice = 0;
 
