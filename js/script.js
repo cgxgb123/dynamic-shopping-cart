@@ -6,9 +6,9 @@ const mobileOverlay = document.getElementById("mobile-overlay");
 const cartModal = document.getElementById("cart-modal");
 const cartOverlay = document.getElementById("cart-overlay");
 const closeCart = document.getElementById("close-cart");
+const cartItemsList = document.getElementById("cart-items");
 
 let totalPrice = 0;
-let cartItems = {};
 
 // Show cart when clicked
 cartToggle.addEventListener("click", () => {
@@ -25,6 +25,27 @@ closeCart.addEventListener("click", () => {
 cartOverlay.addEventListener("click", () => {
   cartModal.classList.remove("show");
   cartOverlay.classList.remove("show");
+});
+
+addToCartBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const product = btn.closest("[data-name]");
+    const name = product.dataset.name;
+    const price = parseFloat(product.dataset.price);
+
+    // Create new cart list item
+    const li = document.createElement("li");
+    li.className = "flex justify-between items-center border-b py-2";
+    li.dataset.price = price;
+    li.innerHTML = `
+      <span>${name} - $${price.toFixed(2)}</span>
+      <button class="remove-btn text-red-500 hover:text-red-700 text-sm">Remove</button>
+    `;
+
+    // Add to list and update total
+    cartItemsList.appendChild(li);
+    updateTotalPrice(price);
+  });
 });
 
 // Function to update the total price
